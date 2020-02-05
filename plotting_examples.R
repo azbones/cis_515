@@ -35,6 +35,28 @@ data %>%
   geom_point() +
   coord_polar()
 
+# Map
+
+# Data from https://github.com/kjhealy/socviz/blob/master/data/election.rda
+# Code from https://socviz.co/maps.html
+
+library(maps)
+
+us_states <- map_data("state")
+election$region <- tolower(election$state)
+us_states_elec <- left_join(us_states, election)
+
+us_states_elec %>%
+  ggplot(mapping = aes(x = long, y = lat, group = group, fill = pct_trump)) +
+  geom_polygon(color = "gray90", size = 0.1) +
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45) +
+  labs(title = "Trump vote") +
+  labs(fill = "Percent") +
+  scale_fill_gradient(low = "white", high = "#CB454A") +
+  labs(title = "Trump vote") +
+  labs(fill = "Percent")
+
+
 # Facets
 
 data %>%
@@ -243,6 +265,7 @@ ggplot(aes(x = wt, y = mpg)) +
   guides(color = FALSE, size = FALSE) +                             
   geom_point(aes(y = predicted), shape = 3) +
   ggtitle("Residual Plot \n(Red Larger and Green Smaller)")
+
 
 
 
